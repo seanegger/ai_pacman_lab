@@ -79,6 +79,38 @@ def tiny_maze_search(problem):
     return  [s, s, w, s, w, w, s, w]
 
 
+def graph_search(problem, fringe):
+    # push start node onto fringe
+    fringe.push([(problem.get_start_state(), "Stop", 0)])
+    # create empy list of visited nodes
+    visited = []
+    # loop through fringe until empty
+    while not fringe.is_empty():
+        # get the path from the top of the fringe
+        path = fringe.pop()
+        # get the leaf node from the path
+        leaf_node = path[-1]
+        leaf_node = leaf_node[0]
+        # check if node is solution
+        if problem.is_goal_state(leaf_node):
+            return [step[1] for step in path]
+        # Check if node has already been visited
+        if leaf_node not in visited:
+            # Add to visited
+            visited.append(leaf_node)
+            # check each successor
+            for successor in problem.get_successors(leaf_node):
+                successor_node = successor[0]
+                # if the successor has not been visited
+                if successor_node not in visited:
+                    # Add node and relevant path to fringe
+                    successor_path = path[:]
+                    successor_path.append(successor)
+                    fringe.push(successor_path)
+
+
+
+
 def depth_first_search(problem):
     """
     Search the deepest nodes in the search tree first.
@@ -94,8 +126,11 @@ def depth_first_search(problem):
     print "Start's successors:", problem.get_successors(problem.get_start_state())
     """
     "*** YOUR CODE HERE ***"
-    print (problem.get_start_state())
-    print (problem.get_successors(problem.get_start_state()))
+    fringe = util.Stack()
+    return graph_search(problem, fringe)
+    
+    
+
 
 
 def breadth_first_search(problem):
