@@ -136,13 +136,16 @@ def depth_first_search(problem):
 def breadth_first_search(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raise_not_defined()
+    fringe = util.Queue()
+    return graph_search(problem, fringe)
 
 
 def uniform_cost_search(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    util.raise_not_defined()
+    priority_function = lambda path: problem.get_cost_of_actions([step[1] for step in path])
+    fringe = util.PriorityQueueWithFunction(priority_function)
+    return graph_search(problem,  fringe)
 
 
 def null_heuristic(state, problem=None):
@@ -156,7 +159,9 @@ def null_heuristic(state, problem=None):
 def a_star_search(problem, heuristic=null_heuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    util.raise_not_defined()
+    priority_function = lambda path: problem.get_cost_of_actions([step[1] for step in path]) + heuristic(path[-1][0], problem)
+    fringe = util.PriorityQueueWithFunction(priority_function)
+    return graph_search(problem, fringe)
 
 # Abbreviations
 bfs = breadth_first_search
