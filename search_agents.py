@@ -306,6 +306,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        print (starting_game_state)
 
     def get_start_state(self):
         """
@@ -313,14 +314,14 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        util.raise_not_defined()
+        return(self.starting_position, self.corners)
 
     def is_goal_state(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        util.raise_not_defined()
+        return len(state[1][:]) == 0
 
     def get_successors(self, state):
         """
@@ -343,7 +344,17 @@ class CornersProblem(search.SearchProblem):
             #   hits_wall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-
+            x,y = state[0]
+            dx, dy = Actions.direction_to_vector(action)
+            next_x, next_y = int(x + dx), int(y + dy)
+            hits_wall = self.walls[next_x][next_y]
+            if not hits_wall:
+                next_position = (next_x, next_y)
+                cost = 1
+                successors.append((next_position, action, cost))
+                if (next_position in state[1][:]):
+                    state[1][:].remove(next_position)
+                
         self._expanded += 1  # DO NOT CHANGE
         return successors
 
@@ -380,7 +391,8 @@ def corners_heuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0  # Default to trivial solution
+    
+            
 
 
 class AStarCornersAgent(SearchAgent):

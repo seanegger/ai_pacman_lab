@@ -81,7 +81,7 @@ def tiny_maze_search(problem):
 
 def graph_search(problem, fringe):
     # push start node onto fringe
-    fringe.push([(problem.get_start_state(), "Stop", 0)])
+    fringe.push([(problem.get_start_state(), "Start", 0)])
     # create empy list of visited nodes
     visited = []
     # loop through fringe until empty
