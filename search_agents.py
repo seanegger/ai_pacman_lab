@@ -395,14 +395,29 @@ def corners_heuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    heuristic = 9999999
+    default_heuristic = 9999999
+    current_heuristic = 0
     # get closest corner and set as heuristic value for that node
-    current_node = state[0]
-    for corner in state[1]:
-        euclidean_distance = abs(current_node[0] - corner[0]) - abs(current_node[1] - corner[1])
-        if (euclidean_distance < heuristic):
-            heuristic = euclidean_distance
-    return heuristic
+    unvisited_corners = []
+    current_state = state[0]
+    for corner in corners:
+        if corner not in state[1]:
+            unvisited_corners.append(corner)
+
+    for i in range(0, len(unvisited_corners)):
+        iterable_hueristic = default_heuristic
+
+        for current_unvisited_corner in unvisited_corners:
+            this_heuristic = manhattan_heuristic(current_state, current_unvisited_corner)
+            if this_heuristic < iterable_hueristic
+                iterable_hueristic = this_heuristic
+                nearest_corner = current_unvisited_corner
+        unvisited_corners.remove(nearest_corner)
+        current_state = nearest_corner
+        current_heuristic += iterable_hueristic
+
+
+    return current_heuristic
     
             
 
