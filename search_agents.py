@@ -321,7 +321,10 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        return len(state[1][:]) == 0
+        if isinstance(state[0], tuple):
+            return len(state[1]) == 0
+        else:
+            return False
 
     def get_successors(self, state):
         """
@@ -344,7 +347,8 @@ class CornersProblem(search.SearchProblem):
             #   hits_wall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-            x,y = state[0]
+            cuurent_position = state[0]
+            x,y = cuurent_position[0], cuurent_position[1]
             dx, dy = Actions.direction_to_vector(action)
             next_x, next_y = int(x + dx), int(y + dy)
             hits_wall = self.walls[next_x][next_y]
@@ -391,6 +395,14 @@ def corners_heuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
+    heuristic = 9999999
+    # get closest corner and set as heuristic value for that node
+    current_node = state[0]
+    for corner in state[1]:
+        euclidean_distance = abs(current_node[0] - corner[0]) - abs(current_node[1] - corner[1])
+        if (euclidean_distance < heuristic):
+            heuristic = euclidean_distance
+    return heuristic
     
             
 
