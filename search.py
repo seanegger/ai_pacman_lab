@@ -93,7 +93,7 @@ def graph_search(problem, fringe):
         leaf_node = leaf_node[0]
         # check if node is solution
         if problem.is_goal_state(leaf_node):
-            return [step[1] for step in path]
+            return [step[1] for step in path[1:]]
         # Check if node has already been visited
         if leaf_node not in visited:
             # Add to visited
@@ -143,7 +143,7 @@ def breadth_first_search(problem):
 def uniform_cost_search(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
-    priority_function = lambda path: problem.get_cost_of_actions([step[1] for step in path])
+    priority_function = lambda path: problem.get_cost_of_actions([step[1] for step in path[1:]])
     fringe = util.PriorityQueueWithFunction(priority_function)
     return graph_search(problem,  fringe)
 
@@ -159,7 +159,7 @@ def null_heuristic(state, problem=None):
 def a_star_search(problem, heuristic=null_heuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
-    priority_function = lambda path: problem.get_cost_of_actions([step[1] for step in path]) + heuristic(path[-1][0], problem)
+    priority_function = lambda path: problem.get_cost_of_actions([step[1] for step in path[1:]]) + heuristic(path[-1][0], problem)
     fringe = util.PriorityQueueWithFunction(priority_function)
     return graph_search(problem, fringe)
 
