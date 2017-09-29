@@ -409,40 +409,16 @@ def corners_heuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    # default_heuristic = 9999999
-    # current_heuristic = 0
-    # # get closest corner and set as heuristic value for that node
-    # unvisited_corners = []
-    # current_state = state[0]
-    # for corner in corners:
-    #     if corner not in state[1]:
-    #         unvisited_corners.append(corner)
-
-    # for i in range(0, len(unvisited_corners)):
-    #     iterable_hueristic = default_heuristic
-
-    #     for current_unvisited_corner in unvisited_corners:
-    #         this_heuristic = manhattan_heuristic(current_state, current_unvisited_corner)
-    #         if this_heuristic < iterable_hueristic:
-    #             iterable_hueristic = this_heuristic
-    #             nearest_corner = current_unvisited_corner
-    #     unvisited_corners.remove(nearest_corner)
-    #     current_state = nearest_corner
-    #     current_heuristic += iterable_hueristic
     heuristic = 0
     cornersLeft = state[1][:]  
     referencePoint = state[0]
     while len(cornersLeft) > 0:
         closestCorner = closestPoint(referencePoint, cornersLeft)
-        heuristic += euclidieanDistance(referencePoint, closestCorner)
+        heuristic += abs(referencePoint[0] - closestCorner[0]) + abs(referencePoint[1] - closestCorner[1])
         referencePoint = closestCorner
         cornersLeft.remove(closestCorner)
     return heuristic
-  
-
-        # return current_heuristic
-    
-            
+           
 
 
 class AStarCornersAgent(SearchAgent):
