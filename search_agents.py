@@ -410,15 +410,15 @@ def corners_heuristic(state, problem):
 
     "*** YOUR CODE HERE ***"
     heuristic = 0
-    cornersLeft = state[1][:]  
-    referencePoint = state[0]
-    while len(cornersLeft) > 0:
-        closestCorner = closestPoint(referencePoint, cornersLeft)
-        heuristic += abs(referencePoint[0] - closestCorner[0]) + abs(referencePoint[1] - closestCorner[1])
-        referencePoint = closestCorner
-        cornersLeft.remove(closestCorner)
+    corners = state[1][:]
+    reference_point = state[0]
+    while len(corners) > 0:
+        closest_corner = closestPoint(reference_point, corners)
+        heuristic += abs(reference_point[0] - closest_corner[0]) + abs(reference_point[1] - closest_corner[1])
+        reference_point = closest_corner
+        corners.remove(closest_corner)
     return heuristic
-           
+
 
 
 class AStarCornersAgent(SearchAgent):
@@ -519,7 +519,13 @@ def food_heuristic(state, problem):
     """
     position, food_grid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    distances = [0]
+    for food in food_grid.as_list():
+        # distances.append(util.manhattanDistance(position, food))
+        distances.append(maze_distance(position, food, problem.starting_game_state))
+    distanceFurthest = max(distances)
+
+    return distanceFurthest
 
 
 class ClosestDotSearchAgent(SearchAgent):
