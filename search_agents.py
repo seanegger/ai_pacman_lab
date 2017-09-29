@@ -416,25 +416,25 @@ def corners_heuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    heuristic = 0
+    total_heuristic = 0
     corners = state[1][:]
-    reference_point = state[0]
+    ref_point = state[0]
     while len(corners) > 0:
         if len(corners) == 0:
             closest_corner = None
         else:   
             closest_corner = corners[0]
-            closest_cost = euclidiean_function(reference_point, closest_corner)
+            closest_cost = euclidiean_function(ref_point, closest_corner)
             for corner in corners[1:]:
-                this_cost = euclidiean_function(reference_point, corner)
+                this_cost = euclidiean_function(ref_point, corner)
                 if closest_cost > this_cost:
                     closest_cost = this_cost
                     closest_corner = corner
 
-        heuristic += abs(reference_point[0] - closest_corner[0]) + abs(reference_point[1] - closest_corner[1])
-        reference_point = closest_corner
+        total_heuristic += abs(ref_point[0] - closest_corner[0]) + abs(ref_point[1] - closest_corner[1])
+        ref_point = closest_corner
         corners.remove(closest_corner)
-    return heuristic
+    return total_heuristic
 
 
 
