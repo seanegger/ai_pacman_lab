@@ -321,14 +321,15 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        return len(state[1]) == 0
         # check if all food dots have been found
-        if len(state[1]) == 0:
-            return true
-        # check if a corner has been found
-        if len(state[1]) - self.corners_left < 0:
-            self.corners_left -= 1
-            return -1
-        return 0
+        # if len(state[1]) == 0:
+        #     return true
+        # # check if a corner has been found
+        # if len(state[1]) - self.corners_left < 0:
+        #     self.corners_left -= 1
+        #     return -1
+        # return 0
 
 
     def get_successors(self, state):
@@ -361,9 +362,9 @@ class CornersProblem(search.SearchProblem):
                 corners_left = state[1][:]
                 if next_position in corners_left:
                     corners_left.remove(next_position)
-                nextState = (next_position, corners_left)
+                next_state = (next_position, corners_left)
                 cost = 1
-                successors.append((next_position, action, cost))
+                successors.append((next_state, action, cost))
                 
         self._expanded += 1  # DO NOT CHANGE
         return successors
