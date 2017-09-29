@@ -92,8 +92,12 @@ def graph_search(problem, fringe):
         leaf_node = path[-1]
         leaf_node = leaf_node[0]
         # check if node is solution
-        if problem.is_goal_state(leaf_node):
+        is_solution = problem.is_goal_state(leaf_node)
+        if is_solution:
             return [step[1] for step in path[1:]]
+        # for multigoal to avoid non complete searches
+        if is_solution == -1:
+            visited = []
         # Check if node has already been visited
         if leaf_node not in visited:
             # Add to visited
@@ -107,6 +111,7 @@ def graph_search(problem, fringe):
                     successor_path = path[:]
                     successor_path.append(successor)
                     fringe.push(successor_path)
+    print ("SEARCH FAILED. NO SOLUTION FOUND")
 
 
 

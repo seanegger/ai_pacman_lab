@@ -306,7 +306,7 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
-        print (starting_game_state)
+        self.corners_left = 4
 
     def get_start_state(self):
         """
@@ -314,17 +314,22 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
-        return(self.starting_position, self.corners)
+        return (self.starting_position, [self.corners[0], self.corners[1], self.corners[2], self.corners[3]])
 
     def is_goal_state(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
-        if isinstance(state[0], tuple):
-            return len(state[1]) == 0
-        else:
-            return False
+        # check if all food dots have been found
+        if len(state[1]) == 0:
+            return true
+        # check if a corner has been found
+        if len(state[1]) - self.corners_left < 0:
+            self.corners_left -= 1
+            return -1
+        return 0
+
 
     def get_successors(self, state):
         """
@@ -347,17 +352,18 @@ class CornersProblem(search.SearchProblem):
             #   hits_wall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-            cuurent_position = state[0]
-            x,y = cuurent_position[0], cuurent_position[1]
+            x,y = state[0]
             dx, dy = Actions.direction_to_vector(action)
             next_x, next_y = int(x + dx), int(y + dy)
             hits_wall = self.walls[next_x][next_y]
             if not hits_wall:
                 next_position = (next_x, next_y)
+                corners_left = state[1][:]
+                if next_position in corners_left:
+                    corners_left.remove(next_position)
+                nextState = (next_position, corners_left)
                 cost = 1
                 successors.append((next_position, action, cost))
-                if (next_position in state[1][:]):
-                    state[1][:].remove(next_position)
                 
         self._expanded += 1  # DO NOT CHANGE
         return successors
@@ -395,29 +401,29 @@ def corners_heuristic(state, problem):
     walls = problem.walls  # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    default_heuristic = 9999999
-    current_heuristic = 0
-    # get closest corner and set as heuristic value for that node
-    unvisited_corners = []
-    current_state = state[0]
-    for corner in corners:
-        if corner not in state[1]:
-            unvisited_corners.append(corner)
+    # default_heuristic = 9999999
+    # current_heuristic = 0
+    # # get closest corner and set as heuristic value for that node
+    # unvisited_corners = []
+    # current_state = state[0]
+    # for corner in corners:
+    #     if corner not in state[1]:
+    #         unvisited_corners.append(corner)
 
-    for i in range(0, len(unvisited_corners)):
-        iterable_hueristic = default_heuristic
+    # for i in range(0, len(unvisited_corners)):
+    #     iterable_hueristic = default_heuristic
 
-        for current_unvisited_corner in unvisited_corners:
-            this_heuristic = manhattan_heuristic(current_state, current_unvisited_corner)
-            if this_heuristic < iterable_hueristic
-                iterable_hueristic = this_heuristic
-                nearest_corner = current_unvisited_corner
-        unvisited_corners.remove(nearest_corner)
-        current_state = nearest_corner
-        current_heuristic += iterable_hueristic
+    #     for current_unvisited_corner in unvisited_corners:
+    #         this_heuristic = manhattan_heuristic(current_state, current_unvisited_corner)
+    #         if this_heuristic < iterable_hueristic
+    #             iterable_hueristic = this_heuristic
+    #             nearest_corner = current_unvisited_corner
+    #     unvisited_corners.remove(nearest_corner)
+    #     current_state = nearest_corner
+    #     current_heuristic += iterable_hueristic
 
 
-    return current_heuristic
+    # return current_heuristic
     
             
 
