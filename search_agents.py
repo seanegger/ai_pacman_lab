@@ -1,5 +1,5 @@
 """
-Author: Sean Egger, Alev Gendium
+Author: Sean Egger, Alec Rulev
 Class: CSI-480-01
 Assignment: Lab 1
 Date Assigned: Monday
@@ -395,21 +395,8 @@ class CornersProblem(search.SearchProblem):
             if self.walls[x][y]:
                 return 999999
         return len(actions)
-
-
-def closestPoint (fromPoint, candidatesList):
-    if len(candidatesList) == 0:
-        return None
-    closestCorner = candidatesList[0]
-    closestCost = euclidieanDistance(fromPoint, closestCorner)
-    for candidate in candidatesList[1:]:
-        thisCost = euclidieanDistance(fromPoint, candidate)
-        if closestCost > thisCost:
-            closestCost = thisCost
-            closestCorner = candidate
-    return closestCorner
   
-def euclidieanDistance (pointA, pointB):
+def euclidiean_function(pointA, pointB):
     return abs(pointA[0] - pointB[0]) + abs(pointA[1] - pointB[1])
 
 def corners_heuristic(state, problem):
@@ -433,7 +420,17 @@ def corners_heuristic(state, problem):
     corners = state[1][:]
     reference_point = state[0]
     while len(corners) > 0:
-        closest_corner = closestPoint(reference_point, corners)
+        if len(corners) == 0:
+            closest_corner = None
+        else:   
+            closest_corner = corners[0]
+            closest_cost = euclidiean_function(reference_point, closest_corner)
+            for corner in corners[1:]:
+                this_cost = euclidiean_function(reference_point, corner)
+                if closest_cost > this_cost:
+                    closest_cost = this_cost
+                    closest_corner = corner
+
         heuristic += abs(reference_point[0] - closest_corner[0]) + abs(reference_point[1] - closest_corner[1])
         reference_point = closest_corner
         corners.remove(closest_corner)

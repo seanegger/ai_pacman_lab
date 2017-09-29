@@ -1,5 +1,5 @@
 """
-Author: Sean Egger, Alev Gendium
+Author: Sean Egger, Alec Rulev
 Class: CSI-480-01
 Assignment: Lab 1
 Date Assigned: Monday
