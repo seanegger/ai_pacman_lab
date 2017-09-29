@@ -98,10 +98,6 @@ def graph_search(problem, fringe):
         is_solution = problem.is_goal_state(leaf_node)
         if is_solution:
             return [step[1] for step in path[1:]]
-        # for multigoal to avoid non complete searches
-        if is_solution == -1:
-            visited = []
-            visited.append(leaf_node)
         # Check if node has already been visited
         if leaf_node not in visited:
             # Add to visited

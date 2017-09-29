@@ -322,14 +322,6 @@ class CornersProblem(search.SearchProblem):
         """
         "*** YOUR CODE HERE ***"
         return len(state[1]) == 0
-        # check if all food dots have been found
-        # if len(state[1]) == 0:
-        #     return true
-        # # check if a corner has been found
-        # if len(state[1]) - self.corners_left < 0:
-        #     self.corners_left -= 1
-        #     return -1
-        # return 0
 
 
     def get_successors(self, state):
@@ -385,6 +377,21 @@ class CornersProblem(search.SearchProblem):
         return len(actions)
 
 
+def closestPoint (fromPoint, candidatesList):
+    if len(candidatesList) == 0:
+        return None
+    closestCorner = candidatesList[0]
+    closestCost = euclidieanDistance(fromPoint, closestCorner)
+    for candidate in candidatesList[1:]:
+        thisCost = euclidieanDistance(fromPoint, candidate)
+        if closestCost > thisCost:
+            closestCost = thisCost
+            closestCorner = candidate
+    return closestCorner
+  
+def euclidieanDistance (pointA, pointB):
+    return abs(pointA[0] - pointB[0]) + abs(pointA[1] - pointB[1])
+
 def corners_heuristic(state, problem):
     """
     A heuristic for the CornersProblem that you defined.
@@ -416,15 +423,24 @@ def corners_heuristic(state, problem):
 
     #     for current_unvisited_corner in unvisited_corners:
     #         this_heuristic = manhattan_heuristic(current_state, current_unvisited_corner)
-    #         if this_heuristic < iterable_hueristic
+    #         if this_heuristic < iterable_hueristic:
     #             iterable_hueristic = this_heuristic
     #             nearest_corner = current_unvisited_corner
     #     unvisited_corners.remove(nearest_corner)
     #     current_state = nearest_corner
     #     current_heuristic += iterable_hueristic
+    heuristic = 0
+    cornersLeft = state[1][:]  
+    referencePoint = state[0]
+    while len(cornersLeft) > 0:
+        closestCorner = closestPoint(referencePoint, cornersLeft)
+        heuristic += euclidieanDistance(referencePoint, closestCorner)
+        referencePoint = closestCorner
+        cornersLeft.remove(closestCorner)
+    return heuristic
+  
 
-
-    # return current_heuristic
+        # return current_heuristic
     
             
 
